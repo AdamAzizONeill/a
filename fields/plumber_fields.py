@@ -1,0 +1,9 @@
+trade: str = 'Plumber'
+own_or_rent_business_premises: str = 'no' #either yes or no
+cover_assumptions: str = 'yes' #either yes or no
+ATM_on_business_premises: str = 'no' #either yes or no
+cover_amount = '5000' #either 2500 5000 7500 10000 15000 20000 25000 30000
+previous_claims: str = 'yes' #either yes or no
+confirm_assumptions: str = 'yes' #either yes or no
+phone_number: str = '07123456789'
+corresponding_address: str = 'no' #either yes or no
