@@ -108,6 +108,7 @@ class FormFillOperations:
         dropdown_options = dropdown_body.find_elements(By.XPATH, './/option')
 
         for i, dropdown_option in enumerate(dropdown_options):
+            sleep(1)
             if address in dropdown_option.text:
                 self.down_arrow_key(i + 1)
                 self.enter_key()
@@ -120,5 +121,42 @@ class FormFillOperations:
                     self.down_arrow_key(i1 + 1)
                     self.enter_key()
                     break
+
     #apply downarrows and an enter when selecting the right element
     # the elements paramter are ordered as the dropdown menu shows
+    #each input will either be false or will contain the non bool data.
+    #below will have functions relating to exception handling
+
+    def meant_to_be_characters(min_length: int | bool, max_length: int | bool, extra_invalid_inputs: list | bool):
+        inputs =  ['1']
+
+        if min_length:
+            inputs += [min_length]
+
+        if max_length:
+            inputs += [max_length]
+
+        if extra_invalid_inputs:
+            inputs += extra_invalid_inputs
+        
+        return inputs
+
+    def meant_to_be_numbers(min: int | bool, max: int | bool, extra_invalid_inputs: str | bool):
+        inputs = ['a']
+
+        if min:
+            inputs += [min]
+
+        if max:
+            inputs += [max]
+
+        if extra_invalid_inputs:
+            inputs += extra_invalid_inputs
+        
+        return inputs
+    
+    def input_text_multiple_times(self, xpath, text, exception_message: str = None):
+        self.input_text(self, xpath, text, exception_message)
+
+    def detect_exception_message_under_text_box(textbox_xpath):
+        pass

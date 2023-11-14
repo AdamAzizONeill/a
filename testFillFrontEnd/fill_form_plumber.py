@@ -131,15 +131,9 @@ class PlumberAvivaCustomerFrontendFormFill(
     def fill_page2(self):
         #self.click_element(f'//*[@ng-reflect-name="displayInd{self.ATM_on_business_premises}"]', exception_message='Is there an ATM on your business premises button on page 2')
         self.click_element(f'//*[@id="claimsRequired{self.previous_claims}-button"]', exception_message='Previous claims button on page 2')
-        if self.previous_claims != 'no':
-            self.fill_claim()
+        self.fill_claim()
 
-        try:
-            self.sole_trader_fill_page2()
-            print(color('Sole trader form successful', text_color='dark green'))
-        except:
-            print(color('Sole trader form failed', text_color='red'))
-            sys.exit()
+        self.click_element(f'//*[@ng-reflect-name="claimsRequiredNo"]')
         
         try:
             self.partnership_fill_page2()
@@ -163,6 +157,13 @@ class PlumberAvivaCustomerFrontendFormFill(
             print(color('Limited Partnership form failed', text_color='red'))
             sys.exit()
 
+        try:
+            self.sole_trader_fill_page2()
+            print(color('Sole trader form successful', text_color='dark green'))
+        except:
+            print(color('Sole trader form failed', text_color='red'))
+            sys.exit()
+
         self.input_text('//*[@id="postcodeInputText"]', self.post_code, exception_message='Postcode textbox on page 2')
 
         self.click_element('//app-address-lookup/div[3]/button', exception_message='Address lookup button on page 2')
@@ -178,6 +179,7 @@ class PlumberAvivaCustomerFrontendFormFill(
         self.click_element('//mat-datepicker-toggle/button', exception_message='Date picker button on page 3')
         self.enter_key()
         self.click_element(f'//*[@id="peopleAssumption{self.confirm_assumptions}"]', exception_message='Confirm assumptions button on page 3')
+        sleep(500)
         self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 3')
 
     def fill_page4(self):
@@ -194,57 +196,43 @@ class PlumberAvivaCustomerFrontendFormFill(
         self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 5')
 
 
-    def test(self, stop_at_page = 6, keep_open = False):
+    def test(self):
         print(color('Starting Plumber Test', text_color='green', is_bold=True))
         self.setup()
         sleep(0.2)
 
-        if stop_at_page > 1:
-            start1 = time()
-            self.fill_page1()
-            print(color('Page 1 successful', text_color='dark green'))
-            end1 = time()
-            sleep(0.3)
+        start1 = time()
+        self.fill_page1()
+        print(color('Page 1 successful', text_color='dark green'))
+        end1 = time()
+        sleep(0.3)
 
-        if stop_at_page > 2:
-            start2 = time()
-            self.fill_page2()
-            print(color('Page 2 successful', text_color='dark green'))
-            end2 = time()
-            sleep(0.3)
+        start2 = time()
+        self.fill_page2()
+        print(color('Page 2 successful', text_color='dark green'))
+        end2 = time()
+        sleep(0.3)
 
-        if stop_at_page > 3:
-            start3 = time()
-            self.fill_page3()
-            print(color('Page 3 successful', text_color='dark green'))
-            end3 = time()
-            sleep(0.3)
+        start3 = time()
+        self.fill_page3()
+        print(color('Page 3 successful', text_color='dark green'))
+        end3 = time()
+        sleep(0.3)
 
-        if stop_at_page > 4:
-            start4 = time()
-            self.fill_page4()
-            print(color('Page 4 successful', text_color='dark green'))
-            sleep(0.3)
-            end4 = time()
+        start4 = time()
+        self.fill_page4()
+        print(color('Page 4 successful', text_color='dark green'))
+        sleep(0.3)
+        end4 = time()
 
-        if stop_at_page > 5:
-            start5 = time()
-            self.fill_page5()
-            print(color('Page 5 successful', text_color='dark green'))
-            end5 = time()
+        start5 = time()
+        self.fill_page5()
+        print(color('Page 5 successful', text_color='dark green'))
+        end5 = time()
 
-        if keep_open:
-            sleep(10000)
         
         self.driver.close()
-        if stop_at_page > 5:
-            return end1 - start1, end2 - start2, end3 - start3, end4 - start4, end5 - start5
-
-    def test_form(self):
-        try:
-            return self.fill_up_to_page()
-        except:
-            self.driver.close()
+        return end1 - start1, end2 - start2, end3 - start3, end4 - start4, end5 - start5
 
 form_filler = PlumberAvivaCustomerFrontendFormFill(
     pf.trade,

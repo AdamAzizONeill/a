@@ -10,7 +10,7 @@ print(color('Note: Currently if there is a problem with the continue button it i
 
 try:
     from testFillFrontEnd.fill_form_plumber import form_filler  
-    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test(6)  
+    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()  
 
 except BaseException as e:
     print(color('Issue with filling plumber form', text_color='red'))
@@ -19,7 +19,7 @@ except BaseException as e:
 
 try:
     from testFillFrontEnd.fill_form_acoustic_consultant import form_filler
-    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test(6)
+    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()
 
 except BaseException as e:
     print(color('Issue with filling acoustic consultant form', text_color='red'))

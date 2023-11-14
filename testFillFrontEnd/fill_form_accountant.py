@@ -254,8 +254,10 @@ class AccountantAvivaCustomerFrontendFormFill(
 
 
     def fill_page4(self):
-        self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 4')
 
+        el = self.find_element('//app-insurance-premium-with-save-quote/div/div/div/div/div[1]/span[5]')
+        print(el.text, '-----------------------------------------------------------')
+        self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 4')
 
     def fill_page5(self):
         if 'partnership' in self.business_type.lower():

@@ -279,46 +279,46 @@ class CafeAvivaCustomerFrontendFormFill(
         self.setup()
         sleep(0.2)
 
-        if stop_at_page > 1:
-            start1 = time()
-            self.fill_page1()
-            print(color('Page 1 successful', text_color='dark green'))
-            end1 = time()
-            sleep(0.3)
+        
+        start1 = time()
+        self.fill_page1()
+        print(color('Page 1 successful', text_color='dark green'))
+        end1 = time()
+        sleep(0.3)
 
-        if stop_at_page > 2:
-            start2 = time()
-            self.fill_page2()
-            print(color('Page 2 successful', text_color='dark green'))
-            end2 = time()
-            sleep(0.3)
 
-        if stop_at_page > 3:
-            start3 = time()
-            self.fill_page3()
-            print(color('Page 3 successful', text_color='dark green'))
-            end3 = time()
-            sleep(0.3)
+        start2 = time()
+        self.fill_page2()
+        print(color('Page 2 successful', text_color='dark green'))
+        end2 = time()
+        sleep(0.3)
 
-        if stop_at_page > 4:
-            start4 = time()
-            self.fill_page4()
-            print(color('Page 4 successful', text_color='dark green'))
-            sleep(0.3)
-            end4 = time()
 
-        if stop_at_page > 5:
-            start5 = time()
-            self.fill_page5()
-            print(color('Page 5 successful', text_color='dark green'))
-            end5 = time()
+        start3 = time()
+        self.fill_page3()
+        print(color('Page 3 successful', text_color='dark green'))
+        end3 = time()
+        sleep(0.3)
+
+
+        start4 = time()
+        self.fill_page4()
+        print(color('Page 4 successful', text_color='dark green'))
+        sleep(0.3)
+        end4 = time()
+
+
+        start5 = time()
+        self.fill_page5()
+        print(color('Page 5 successful', text_color='dark green'))
+        end5 = time()
 
         if keep_open:
             sleep(10000)
         
         self.driver.close()
-        if stop_at_page > 5:
-            return end1 - start1, end2 - start2, end3 - start3, end4 - start4, end5 - start5
+
+        return end1 - start1, end2 - start2, end3 - start3, end4 - start4, end5 - start5
 
     def test_form(self):
         try:
