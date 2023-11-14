@@ -1,0 +1,29 @@
+{
+    "name": [
+        "Public and products liability cover",
+        "Tools, stcok and business equipment cover",
+        "Employers' liability cover"
+    ],
+    "coverLevel": [
+        2000000, 
+        30000, 
+        10000000
+    ],
+    "cost": [
+        455.57, 
+        266.22, 
+        403.16
+    ],
+    "editable": [
+        false, 
+        true,
+        false
+    ],
+    "removable": [
+        false, 
+        true, 
+        true
+    ],
+    "MonthlyTotal": 1234567,
+    "Annual total": 124764
+}
