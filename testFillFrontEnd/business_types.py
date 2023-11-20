@@ -1,5 +1,7 @@
 from testFillFrontEnd.form_fill_operations import FormFillOperations
 from time import sleep
+import sys
+from print_styles import color
 
 class BusinessType(FormFillOperations):
     def __init__(
@@ -99,4 +101,36 @@ class BusinessType(FormFillOperations):
         self.input_text('//*[@ng-reflect-name="numberOfEmployees"]', self.number_of_employees, exception_message='Number of employees on page 2')
         if self.employers_liability_coverage:
             self.click_element(f'//*[@id="{self.employers_liability_coverage}-button"]', exception_message='Liability coverage on page 2')
-        self.click_element(f'//*[@id="subcontractorsInd{self.bona_fide_subcontractors}"]', exception_message='Bona Fide Subcontractors button on page 2')        
+        self.click_element(f'//*[@id="subcontractorsInd{self.bona_fide_subcontractors}"]', exception_message='Bona Fide Subcontractors button on page 2')  
+
+
+    def test_all_business_types(self):
+        
+        try:
+            self.partnership_fill_page2()
+            print(color('Partnership form successful', text_color='dark green'))
+        except:
+            print(color('Partnership form failed', text_color='red'))
+            sys.exit()
+        try:
+            self.limited_company_fill_page2()
+            print(color('Limited Company form successful', text_color='dark green'))
+        except:
+            print(color('Limited Company form failed', text_color='red'))
+            sys.exit()
+        try:
+            self.limited_partnership_fill_page2()
+            print(color('Limited Partnership form successful', text_color='dark green'))
+            print(color('Limited Liability Partnership form successful', text_color='dark green'))
+          
+        except:
+            print(color('Limited Liability Partnership form failed', text_color='red'))
+            print(color('Limited Partnership form failed', text_color='red'))
+            sys.exit()     
+
+        try:
+            self.sole_trader_fill_page2()
+            print(color('Sole trader form successful', text_color='dark green'))
+        except:
+            print(color('Sole trader form failed', text_color='dark green'))
+            sys.exit() 

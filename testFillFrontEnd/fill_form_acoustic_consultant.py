@@ -133,90 +133,39 @@ class AcousticsConsultantAvivaCustomerFrontendFormFill(
         self.business_type = business_type
         self.contact_name = contact_name
 
-    def fill_claim(self):
-        claim_types = ['property', 'liability', 'professional indeminity']
-        for i, claim in enumerate(self.claim_list_test):
-            try:
-                self.click_element(f'//*[@id="{claim["type"]}Ind-button"]')
-
-                if claim['type'] != 'professionalIndemnity':
-                    self.input_text(f'//*[@ng-reflect-name="claimDateMonth{str(0)}"]', claim['month'])
-                    self.input_text(f'//*[@ng-reflect-name="claimDateYear{str(0)}"]', claim['year'])
-                    dropdown_bar = self.driver.find_element(By.XPATH, f'//*[@ng-reflect-name="claimType{str(0)}"]')
-                    dropdown_bar.click()
-                    dropdown_list = dropdown_bar.find_elements(By.XPATH, './child::*')   
-                    self.select_claim_type_from_dropdown(claim['main_cause'], dropdown_list, i)
-                    self.input_text(f'//*[@ng-reflect-name="claimAmount{str(0)}"]', claim['amount_of_loss'])
-                    self.input_text(f'//*[@ng-reflect-name="claimPostcode{str(0)}"]', claim['postcode'])
-                    
-                else:
-                    self.input_text(f'//*[@ng-reflect-name="claimDateMonth{str(0)}"]', claim['month'])
-                    self.input_text(f'//*[@ng-reflect-name="claimDateYear{str(0)}"]', claim['year'])
-                    self.input_text(f'//*[@ng-reflect-name="claimDescription{str(0)}"]', claim['details'])
-                    self.input_text(f'//*[@ng-reflect-name="claimAmount{str(0)}"]', claim['amount_of_loss'])
-                print(color(f'Claim type {claim_types[i]} successful', text_color='dark green'))
-            except:
-                print(color(f'Claim type {claim_types[i]} failed', text_color='red'))
-                sys.exit()
-
 
     def fill_page1(self):
-        
         self.click_element('//*[@id="onetrust-accept-btn-handler"]', exception_message='Accept cookies button')
         self.input_text('//*[@id="tradeCodeText"]', self.trade, exception_message='Trade input field on page 1')
         self.select_trade_from_dropdown(self.trade, '//*[@id="mat-autocomplete-0"]') 
         self.click_element(f'//*[@id="fixedBusinessPremises{self.own_or_rent_business_premises}-button"]', exception_message='Owning or renting fixed premises button in page 1')
         self.click_element(f'//*[@id="coverAssumptions{self.cover_assumptions}-button"]', exception_message='Confirm assumptions on page 1')
 
-        if self.content_cover:
-            sleep(0.2)
-            self.click_element('//*[@ng-reflect-name="contentsCoverSelection"]', exception_message='Content cover button on page 1')
-            self.input_text('//*[@ng-reflect-name="contentsCoverAmount"]', self.content_cover, exception_message='Content cover amount textbox on page 1')
-
-        if self.stock_cover:
-            sleep(0.2)
-            self.click_element('//*[@ng-reflect-name="stockCoverSelection"]', exception_message='Stock cover button on page 1')
-            self.input_text('//*[@id="stockCoverAmount"]', self.stock_cover, exception_message='Stock cover amount textbox on page 1')
-
-        if self.transit_stock:
-            self.click_element('//*[@ng-reflect-name="stockInTransitSelection"]', exception_message='Transit stock cover button on page 1')
-            self.click_element(f'//*[@ng-reflect-name="stockInTransitCoverAmount{self.transit_stock}"]', exception_message='Content cover amount button on page 1')
-        
-        if self.building_cover:
-            self.click_element('//*[@ng-reflect-name="buildingCoverSelection"]', exception_message='Building cover button on page 1')
-            self.input_text('//*[@id="buildingCoverAmount"]', self.building_cover, exception_message='Building cover amount textbox on page 1')
-        
-        if self.employer_liability:
-            self.click_element('//*[@ng-reflect-name="employersLiabilitySelection"]', exception_message='Employer liability cover button on page 1')
-
-        if self.electronic_equipment:
-            self.click_element('//*[@ng-reflect-name="electronicEquipmentCoverSelect"]', exception_message='Electronic equipment cover button on page 1')
-            self.input_text('//*[@id="electronicEquipmentCoverAmount"]', self.electronic_equipment, exception_message='Electronic equipment cover amount textbox on page 1')
-        
-        if self.alcohol_loss:
-            self.click_element('//*[@ng-reflect-name="lossOfAlcoholSelection"]', exception_message='Alcohol loss cover button on page 1')
-            self.click_element(f'//*[@id="lossOfAlcoholCoverAmount{self.alcohol_loss}"]', exception_message='Alcohol loss equipment cover amount textbox on page 1')
-
-        if self.PI_cover:
-            self.click_element('//*[@ng-reflect-name="piCoverSelectionCB"]', exception_message='Professional indeminity cover button on page 1')
-            self.click_element(f'//*[@id="piCoverAmount{self.PI_cover}"]', exception_message='Professional indeminity amount cover button on page 1')
+        sleep(0.2)
+        self.click_element('//*[@ng-reflect-name="contentsCoverSelection"]', exception_message='Content cover button on page 1')
+        self.input_text('//*[@ng-reflect-name="contentsCoverAmount"]', self.content_cover, exception_message='Content cover amount textbox on page 1')
+        sleep(0.2)
+        self.click_element('//*[@ng-reflect-name="stockCoverSelection"]', exception_message='Stock cover button on page 1')
+        self.input_text('//*[@id="stockCoverAmount"]', self.stock_cover, exception_message='Stock cover amount textbox on page 1')
+        self.click_element('//*[@ng-reflect-name="stockInTransitSelection"]', exception_message='Transit stock cover button on page 1')
+        self.click_element(f'//*[@ng-reflect-name="stockInTransitCoverAmount{self.transit_stock}"]', exception_message='Content cover amount button on page 1')
+        self.click_element('//*[@ng-reflect-name="buildingCoverSelection"]', exception_message='Building cover button on page 1')
+        self.input_text('//*[@id="buildingCoverAmount"]', self.building_cover, exception_message='Building cover amount textbox on page 1')
+        self.click_element('//*[@ng-reflect-name="employersLiabilitySelection"]', exception_message='Employer liability cover button on page 1')
+        self.click_element('//*[@ng-reflect-name="electronicEquipmentCoverSelect"]', exception_message='Electronic equipment cover button on page 1')
+        self.input_text('//*[@id="electronicEquipmentCoverAmount"]', self.electronic_equipment, exception_message='Electronic equipment cover amount textbox on page 1')
+        self.click_element('//*[@ng-reflect-name="lossOfAlcoholSelection"]', exception_message='Alcohol loss cover button on page 1')
+        self.click_element(f'//*[@id="lossOfAlcoholCoverAmount{self.alcohol_loss}"]', exception_message='Alcohol loss equipment cover amount textbox on page 1')
+        self.click_element('//*[@ng-reflect-name="piCoverSelectionCB"]', exception_message='Professional indeminity cover button on page 1')
+        self.click_element(f'//*[@id="piCoverAmount{self.PI_cover}"]', exception_message='Professional indeminity amount cover button on page 1')
         
         self.click_element('//*[@id="continueButton"]', exception_message='Continue button on page 1')
 
     
     def fill_page2(self):
         self.click_element(f'//*[@ng-reflect-name="displayInd{self.ATM_on_business_premises}"]', exception_message='ATM on business premises button on page 2')
-        #month of extra stock cover
-        extra_cover_els = self.driver.find_elements(By.NAME, 'additionalCoverMonthsInd')
-        if self.additional_cover_months == 'standard':
-            extra_cover_els[1].click()
-        else:
-            extra_cover_els[2].click()
-            self.additional_cover_months = self.additional_cover_months.split()
-            month_checkboxes = self.driver.find_elements(By.TAG_NAME, 'mat-checkbox')
-            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-            for month in self.additional_cover_months:
-                month_checkboxes[months.index(month)].click()
+
+        self.additional_cover_months_fill()
 
         self.click_element(f'//*[@ng-reflect-name="alcoholLicenceOpposition{self.alcohol_opposition}"]', exception_message='Alcohol opposition button on page 2')
         self.click_element(f'//*[@ng-reflect-name="alcoholLicenceRefusal{self.alcohol_refusal}"]', exception_message='Alcohol refusal button on page 2')
@@ -227,34 +176,7 @@ class AcousticsConsultantAvivaCustomerFrontendFormFill(
         if self.previous_claims != 'no':
             self.fill_claim()
 
-        try:
-            self.sole_trader_fill_page2()
-            print(color('Sole trader form successful', text_color='dark green'))
-        except:
-            print(color('Sole trader form failed', text_color='red'))
-            sys.exit()
-        
-        try:
-            self.partnership_fill_page2()
-            print(color('Partnership form successful', text_color='dark green'))
-        except:
-            print(color('Partnership form failed', text_color='red'))
-            sys.exit()
-        try:
-            self.limited_company_fill_page2()
-            print(color('Limited Company form successful', text_color='dark green'))
-        except:
-            print(color('Limited Company form failed', text_color='red'))
-            sys.exit()
-        try:
-            self.limited_partnership_fill_page2()
-            print(color('Limited Partnership form successful', text_color='dark green'))
-            print(color('Limited Liability Partnership form successful', text_color='dark green'))
-          
-        except:
-            print(color('Limited Liability Partnership form failed', text_color='red'))
-            print(color('Limited Partnership form failed', text_color='red'))
-            sys.exit()
+        self.test_all_business_types()
 
         self.input_text('//*[@id="postcodeInputText"]', self.post_code, exception_message='Postcode textbox on page 2')
 
@@ -264,6 +186,7 @@ class AcousticsConsultantAvivaCustomerFrontendFormFill(
 
         self.input_text('//*[@ng-reflect-name="emailAddress"]', self.email_address, exception_message='Email address textbox on page 2')
         self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 2')
+
 
 
     def fill_page3(self):
@@ -290,8 +213,9 @@ class AcousticsConsultantAvivaCustomerFrontendFormFill(
         self.click_element(f'//*[@id="peopleAssumption{self.confirm_assumptions}"]')
         self.click_element(f'//*[@ng-reflect-name="premisesAssumption{self.premises_assumption}"]')
 
-        
-        self.click_element('//button[contains(text(),"Continue")]')
+        sleep(0.5)
+        self.click_element('//*[@type="submit"]', exception_message='Continue button on page 3')
+        sleep(20)
 
     def fill_page4(self):
 

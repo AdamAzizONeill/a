@@ -1,4 +1,4 @@
-business_type = 'limited partnership' #business_type (either sole trader, partnership, limited company, limited partnership)
+business_type = 'sole trader' #business_type (either sole trader, partnership, limited company, limited partnership)
 
 #sole trader and partnership and limited company
 business_year_start: int = '1999'

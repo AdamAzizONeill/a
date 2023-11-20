@@ -8,6 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
+import json
 
 
 
@@ -21,7 +22,7 @@ class FormFillOperations:
         
 
     def find_element(self, xpath):
-        element = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+        element = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable((By.XPATH, xpath)))
         x = element.location['x']
         y = element.location['y']
         scroll_by_coord = 'window.scrollTo(%s,%s);' % (x, y)
@@ -114,6 +115,18 @@ class FormFillOperations:
                 self.enter_key()
                 break
 
+    def additional_cover_months_fill(self):
+        extra_cover_els = self.driver.find_elements(By.NAME, 'additionalCoverMonthsInd')
+        if self.additional_cover_months == 'standard':
+            extra_cover_els[1].click()
+        else:
+            extra_cover_els[2].click()
+            self.additional_cover_months = self.additional_cover_months.split()
+            month_checkboxes = self.driver.find_elements(By.TAG_NAME, 'mat-checkbox')
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            for month in self.additional_cover_months:
+                month_checkboxes[months.index(month)].click()
+
     def select_claim_type_from_dropdown(self, claim_type, elements, i):
         if i == 0:
             for i1, element in enumerate(elements):
@@ -121,42 +134,60 @@ class FormFillOperations:
                     self.down_arrow_key(i1 + 1)
                     self.enter_key()
                     break
-
-    #apply downarrows and an enter when selecting the right element
-    # the elements paramter are ordered as the dropdown menu shows
-    #each input will either be false or will contain the non bool data.
-    #below will have functions relating to exception handling
-
-    def meant_to_be_characters(min_length: int | bool, max_length: int | bool, extra_invalid_inputs: list | bool):
-        inputs =  ['1']
-
-        if min_length:
-            inputs += [min_length]
-
-        if max_length:
-            inputs += [max_length]
-
-        if extra_invalid_inputs:
-            inputs += extra_invalid_inputs
-        
-        return inputs
-
-    def meant_to_be_numbers(min: int | bool, max: int | bool, extra_invalid_inputs: str | bool):
-        inputs = ['a']
-
-        if min:
-            inputs += [min]
-
-        if max:
-            inputs += [max]
-
-        if extra_invalid_inputs:
-            inputs += extra_invalid_inputs
-        
-        return inputs
     
-    def input_text_multiple_times(self, xpath, text, exception_message: str = None):
-        self.input_text(self, xpath, text, exception_message)
+    def fill_claim(self):
+        self.click_element(f'//*[@id="claimsRequiredYes-button"]')
 
-    def detect_exception_message_under_text_box(textbox_xpath):
-        pass
+        claim_types = ['property', 'liability', 'professional indeminity']
+        for i, claim in enumerate(self.claim_list_test):
+            try:
+                self.click_element(f'//*[@id="{claim["type"]}Ind-button"]')
+
+                if claim['type'] != 'professionalIndemnity':
+                    self.input_text(f'//*[@ng-reflect-name="claimDateMonth{str(0)}"]', claim['month'])
+                    self.input_text(f'//*[@ng-reflect-name="claimDateYear{str(0)}"]', claim['year'])
+                    dropdown_bar = self.driver.find_element(By.XPATH, f'//*[@ng-reflect-name="claimType{str(0)}"]')
+                    dropdown_bar.click()
+                    dropdown_list = dropdown_bar.find_elements(By.XPATH, './child::*')   
+                    self.select_claim_type_from_dropdown(claim['main_cause'], dropdown_list, i)
+                    self.input_text(f'//*[@ng-reflect-name="claimAmount{str(0)}"]', claim['amount_of_loss'])
+                    self.input_text(f'//*[@ng-reflect-name="claimPostcode{str(0)}"]', claim['postcode'])
+                    
+                else:
+                    self.input_text(f'//*[@ng-reflect-name="claimDateMonth{str(0)}"]', claim['month'])
+                    self.input_text(f'//*[@ng-reflect-name="claimDateYear{str(0)}"]', claim['year'])
+                    self.input_text(f'//*[@ng-reflect-name="claimDescription{str(0)}"]', claim['details'])
+                    self.input_text(f'//*[@ng-reflect-name="claimAmount{str(0)}"]', claim['amount_of_loss'])
+                print(color(f'Claim type {claim_types[i]} successful', text_color='dark green'))
+            except:
+                print(color(f'Claim type {claim_types[i]} failed', text_color='red'))
+                sys.exit()
+
+        self.click_element(f'//*[@id="claimsRequiredNo-button"]')
+
+    def test_quote_page(self, trade: str):
+
+        with open(f'fields\quotes\{trade.lower()}.json', 'r', encoding='utf8') as f:
+            json_data_str = f.read()
+            json_data_dict = json.loads(json_data_str)
+        
+        table = self.find_element('//*[@id="coverTable"]/tbody')
+        table_rows = table.find_elements(By.XPATH, './/tr')
+        
+        for row in table_rows:
+            quote_info = row.find_elements(By.XPATH, './/td')
+            quote_info_str = [info.text for info in quote_info]
+
+            cover_type_row = quote_info_str[0] + ' row'
+            cover_type = quote_info_str[0]
+            #check that the cover type is present in the expected body
+            if cover_type_row not in json_data_dict.keys():
+                print(color(f'Cover type {cover_type} not found in page', text_color='red'))
+
+            else:
+                if quote_info_str == json_data_dict[cover_type_row]:
+                    print(color(f'Cover type {cover_type} passed' ,text_color = 'dark green'))
+
+                else:
+                    print(color(f'Cover type {cover_type} failed' ,text_color = 'red'))
+
