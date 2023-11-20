@@ -129,8 +129,9 @@ class PlumberAvivaCustomerFrontendFormFill(
 
     
     def fill_page2(self):
-        #self.click_element(f'//*[@id="claimsRequired{self.previous_claims}-button"]', exception_message='Previous claims button on page 2')
-        #self.fill_claim()
+        #self.click_element(f'//*[@ng-reflect-name="displayInd{self.ATM_on_business_premises}"]', exception_message='Is there an ATM on your business premises button on page 2')
+        self.click_element(f'//*[@id="claimsRequired{self.previous_claims}-button"]', exception_message='Previous claims button on page 2')
+        self.fill_claim()
 
         self.click_element(f'//*[@ng-reflect-name="claimsRequiredNo"]')
         
