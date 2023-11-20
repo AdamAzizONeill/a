@@ -28,7 +28,7 @@ except BaseException as e:
 
 try:
     from testFillFrontEnd.fill_form_accountant import form_filler
-    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test(6)
+    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()
 
 except Exception as e:
     print(color('Issue with filling accountant form', text_color='red'))
@@ -37,7 +37,7 @@ except Exception as e:
 
 try:
     from testFillFrontEnd.fill_form_cafe import form_filler
-    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test(6)
+    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()
 
 except Exception as e:
     print(color('Issue with filling cafe form', text_color='red'))
