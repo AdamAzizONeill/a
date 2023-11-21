@@ -1,43 +1,13 @@
+import sys
+sys.path.append('../mcomm_form')
+
+from fields.business_type_fields import BusinessTypeFields
 from testFillFrontEnd.form_fill_operations import FormFillOperations
 from time import sleep
 import sys
 from print_styles import color
 
-class BusinessType(FormFillOperations):
-    def __init__(
-        self,
-        business_year_start: str,
-        number_of_employees: str,
-        employers_liability_coverage: str,
-        bona_fide_subcontractors: str,
-        trading_name: str,
-        title: str,
-        first_name: str,
-        last_name: str,
-        date_of_birth: str,
-        post_code: str,
-        address: str,
-        email_address: str,
-        partnership_name: str,
-        partners: list,
-        business_name: str,
-            ):
-        self.business_year_start = business_year_start
-        self.partnership_name = partnership_name
-        self.trading_name = trading_name
-        self.partners = partners
-        self.number_of_employees = number_of_employees
-        self.employers_liability_coverage = employers_liability_coverage
-        self.bona_fide_subcontractors = bona_fide_subcontractors.capitalize()
-        self.post_code = post_code
-        self.address = address
-        self.email_address = email_address
-        self.title = title.capitalize()
-        self.first_name = first_name
-        self.last_name = last_name
-        self.date_of_birth = date_of_birth
-        self.business_name = business_name
-
+class BusinessType(FormFillOperations, BusinessTypeFields):
     
     def sole_trader_fill_page2(self):
         business_type_el = self.click_element('//*[@ng-reflect-name="soleTraderInd"]', exception_message='Sole trader button on page 2')
@@ -65,7 +35,7 @@ class BusinessType(FormFillOperations):
         self.input_text('//*[@ng-reflect-name="tradingName"]', self.trading_name, exception_message='Trading name on page 2')
         sleep(0.2)
         self.input_text('//*[@ng-reflect-name="numberOfPartners"]', str(len(self.partners)))
-        #sleep(0.2)
+        
         for i, partner in enumerate(self.partners):
             self.input_text(f'//*[@ng-reflect-name="forename{i}"]', partner['first_name'], exception_message='First name on page 2')
             self.input_text(f'//*[@ng-reflect-name="surname{i}' + '}"]', partner['last_name'], exception_message='Last name on page 2')

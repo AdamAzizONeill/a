@@ -19,7 +19,6 @@ class FormFillOperations:
         self.driver = webdriver.Firefox()
         self.driver.get("http://localhost:4200/home")
         self.actions = ActionChains(self.driver)
-        
 
     def find_element(self, xpath):
         element = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable((By.XPATH, xpath)))
@@ -28,9 +27,7 @@ class FormFillOperations:
         scroll_by_coord = 'window.scrollTo(%s,%s);' % (x, y)
         scroll_nav_out_of_way = 'window.scrollBy(0, -120);'
         self.driver.execute_script(scroll_by_coord)
-
         return element
-
 
     def input_text(self, xpath, text, exception_message: str = None):
         element_found = False
@@ -56,7 +53,6 @@ class FormFillOperations:
             sys.exit()
         return element
 
-
     def click_element(self, xpath, exception_message: str = None):
         element_found = False
         try:
@@ -80,17 +76,13 @@ class FormFillOperations:
                 print(color(full_exception_message, text_color='red'))
             sys.exit()
         return element
-            
-
 
     def down_arrow_key(self, iterate):
         for k in range(iterate):
             self.actions.send_keys(Keys.ARROW_DOWN).perform()
-    
 
     def enter_key(self):
         self.actions.send_keys(Keys.ENTER).perform()
-
 
     def select_trade_from_dropdown(self, trade, dropdown_body_xpath):
         dropdown_body = self.find_element(dropdown_body_xpath)
@@ -101,7 +93,6 @@ class FormFillOperations:
                 self.down_arrow_key(i + 1)
                 self.enter_key()
                 break
-    
 
     def select_address_from_dropdown(self, address):
         dropdown_body = self.find_element('//app-address-lookup/select')
@@ -159,6 +150,7 @@ class FormFillOperations:
                     self.input_text(f'//*[@ng-reflect-name="claimDescription{str(0)}"]', claim['details'])
                     self.input_text(f'//*[@ng-reflect-name="claimAmount{str(0)}"]', claim['amount_of_loss'])
                 print(color(f'Claim type {claim_types[i]} successful', text_color='dark green'))
+                
             except:
                 print(color(f'Claim type {claim_types[i]} failed', text_color='red'))
                 sys.exit()
@@ -183,11 +175,22 @@ class FormFillOperations:
             #check that the cover type is present in the expected body
             if cover_type_row not in json_data_dict.keys():
                 print(color(f'Cover type {cover_type} not found in page', text_color='red'))
-
             else:
                 if quote_info_str == json_data_dict[cover_type_row]:
                     print(color(f'Cover type {cover_type} passed' ,text_color = 'dark green'))
-
                 else:
                     print(color(f'Cover type {cover_type} failed' ,text_color = 'red'))
+        
+        #the next steps here is to try and remove and edit quotes, similarly you can use a json object
+        # also there are some additional quotes below which can each be added
+        # at the end test the total value of these values, potentially also test the values of each cover
+
+
+# TODO
+# clean the codes to use way less lines with some smarter inheritance
+# in form fill operations have methods which contain inputs and use those inputs
+# in fill_form_trade have an inherited class called fields which means you will no longer have to input those fields into the main class
+
+#need to fix the try and except loop when trying to find, input, or click an element to allow for the excpetion messages.
+
 

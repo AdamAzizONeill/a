@@ -10,20 +10,20 @@ print(color('Note: In the case of a failed test, this could be due to the test i
 print(color('Note: Currently if there is a problem with the continue button it is most likely due to some field on that page having a problem', text_color = 'red'))
 
 try:
-    from testFillFrontEnd.fill_form_accountant import form_filler
-    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()
-
-except Exception as e:
-    print(color('Issue with filling accountant form', text_color='red'))
-    print(traceback.format_exc())
-    sys.exit()
-
-try:
     from testFillFrontEnd.fill_form_plumber import form_filler  
     page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()  
 
 except Exception as e:
     print(color('Issue with filling plumber form', text_color='red'))
+    print(traceback.format_exc())
+    sys.exit()
+
+try:
+    from testFillFrontEnd.fill_form_accountant import form_filler
+    page1_time, page2_time, page3_time, page3_time, page5_time = form_filler.test()
+
+except Exception as e:
+    print(color('Issue with filling accountant form', text_color='red'))
     print(traceback.format_exc())
     sys.exit()
 
