@@ -1,20 +1,7 @@
 {
-    "name": [
-        
-    ],
-    "coverLevel": [
-        
-    ],
-    "cost": [
-        
-    ],
-    "editable": [
-        
-    ],
-    "removable": [
-        
-    ],
+    "Public and products liability cover row": ["Public and products liability cover", "£2,000,000", "£479.55", "", ""],
+    "Employers' liability cover row": ["Employers' liability cover", "£10,000,000", "£424.38", "Remove", ""],
+    "Tools, stock and business equipment cover row": ["Tools, stock and business equipment cover", "£5,000", "£131.91", "Remove", "Edit"],
     "MonthlyTotal": 1234567,
     "Annual total": 124764
-    
 }

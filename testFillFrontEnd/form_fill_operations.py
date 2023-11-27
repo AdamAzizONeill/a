@@ -126,11 +126,11 @@ class FormFillOperations:
                     self.enter_key()
                     break
     
-    def fill_claim(self):
+    def fill_claim(self, claim_list_test):
         self.click_element(f'//*[@id="claimsRequiredYes-button"]')
 
         claim_types = ['property', 'liability', 'professional indeminity']
-        for i, claim in enumerate(self.claim_list_test):
+        for i, claim in enumerate(claim_list_test):
             try:
                 self.click_element(f'//*[@id="{claim["type"]}Ind-button"]')
 
@@ -157,40 +157,57 @@ class FormFillOperations:
 
         self.click_element(f'//*[@id="claimsRequiredNo-button"]')
 
-    def test_quote_page(self, trade: str):
+    def proffessional_indemnity_cover(self):
+        self.click_element('//*[@ng-reflect-name="replaceExistingYes"]')
+        self.click_element('//*[@ng-reflect-name="retroactiveDateIndYes"]')
+        self.click_element('//*[@aria-label="Open calendar"]')
+        sleep(0.1)
+        self.enter_key()
+        self.input_text('//*[@ng-reflect-name="annualIncome"]', '300000')
+        self.click_element('//*[@ng-reflect-name="singleContractIndYes"]')
+        self.click_element('//*[@ng-reflect-name="futureClaimIndYes"]')
+        self.click_element('//*[@ng-reflect-value="1000000"]')
+        self.click_element('//*[@ng-reflect-name="assumptionsIndYes"]')
+        self.click_element('//button[contains(text(),"Continue")]')
+        print(color('Professional Indemnity successful', text_color='dark green'))
 
+    def test_quote_table(actual_quote_table, expected_quote_table):
+        pass
+
+    def test_quote_page(self, trade: str):
         with open(f'fields\quotes\{trade.lower()}.json', 'r', encoding='utf8') as f:
             json_data_str = f.read()
             json_data_dict = json.loads(json_data_str)
         
         table = self.find_element('//*[@id="coverTable"]/tbody')
         table_rows = table.find_elements(By.XPATH, './/tr')
+
+        print('expected      ', json_data_dict)
         
         for row in table_rows:
             quote_info = row.find_elements(By.XPATH, './/td')
             quote_info_str = [info.text for info in quote_info]
 
+            print('actual        ', quote_info_str)
+
             cover_type_row = quote_info_str[0] + ' row'
             cover_type = quote_info_str[0]
             #check that the cover type is present in the expected body
             if cover_type_row not in json_data_dict.keys():
-                print(color(f'Cover type {cover_type} not found in page', text_color='red'))
+                print(color(f'Cover type {cover_type} found in page but not expected', text_color='red'))
             else:
                 if quote_info_str == json_data_dict[cover_type_row]:
                     print(color(f'Cover type {cover_type} passed' ,text_color = 'dark green'))
                 else:
                     print(color(f'Cover type {cover_type} failed' ,text_color = 'red'))
         
-        #the next steps here is to try and remove and edit quotes, similarly you can use a json object
-        # also there are some additional quotes below which can each be added
-        # at the end test the total value of these values, potentially also test the values of each cover
 
 
 # TODO
-# clean the codes to use way less lines with some smarter inheritance
-# in form fill operations have methods which contain inputs and use those inputs
-# in fill_form_trade have an inherited class called fields which means you will no longer have to input those fields into the main class
-
+#the next steps here is to try and remove and edit quotes, similarly you can use a json object
+# also add exception where there are jsons values which were not satisfied
+# also there are some additional quotes below which can each be added
+# at the end test the total value of these values, potentially also test the values of each cover
 #need to fix the try and except loop when trying to find, input, or click an element to allow for the excpetion messages.
 
 

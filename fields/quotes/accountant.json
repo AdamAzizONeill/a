@@ -1,29 +1,7 @@
 {
-    "name": [
-        "Public and products liability cover",
-        "Tools, stcok and business equipment cover",
-        "Employers' liability cover"
-    ],
-    "coverLevel": [
-        2000000, 
-        5000, 
-        10000000
-    ],
-    "cost": [
-        455.57, 
-        266.22, 
-        403.16
-    ],
-    "editable": [
-        true, 
-        true,
-        false
-    ],
-    "removable": [
-        false, 
-        true, 
-        true
-    ],
+    "Public and products liability cover row": ["Public and products liability cover", "£2,000,000", "£479.55", "", ""],
+    "Employers' liability cover row": ["Employers' liability cover", "£10,000,000", "£424.38", "Remove", ""],
+    "Tools, stock and business equipment cover row": ["Tools, stock and business equipment cover", "£5,000", "£131.91", "Remove", "Edit"],
     "MonthlyTotal": 1234567,
     "Annual total": 124764
 }

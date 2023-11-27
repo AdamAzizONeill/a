@@ -7,8 +7,10 @@ from print_styles import color
 from testFillFrontEnd.business_types import BusinessType
 from testFillFrontEnd.form_fill_operations import FormFillOperations
 from fields.cafe_fields import CafeFields
+from fields.claim_field import ClaimFields
 
-class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFields):
+
+class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFields, ClaimFields):
 
     def fill_page1(self):
 
@@ -36,7 +38,6 @@ class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFi
         self.input_text('//*[@id="electronicEquipmentCoverAmount"]', self.electronic_equipment, exception_message='Electronic equipment cover amount textbox on page 1')
         self.click_element('//*[@ng-reflect-name="lossOfAlcoholSelection"]', exception_message='Alcohol loss cover button on page 1')
         self.click_element(f'//*[@id="lossOfAlcoholCoverAmount{self.alcohol_loss}"]', exception_message='Alcohol loss equipment cover amount textbox on page 1')
-        
         self.click_element('//*[@id="continueButton"]', exception_message='Continue button on page 1')
 
     
@@ -50,7 +51,7 @@ class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFi
         self.click_element(f'//*[@ng-reflect-name="alcoholLicenceRefusal{self.alcohol_refusal}"]', exception_message='Alcohol refusal button on page 2')
         self.click_element(f'//*[@ng-reflect-name="alcoholLicenceTransfer{self.alcohol_transfer}"]', exception_message='Alcohol transfer button on page 2')
 
-        self.fill_claim()
+        self.fill_claim(self.claim_list_test)
         self.test_all_business_types()
 
         self.input_text('//*[@id="postcodeInputText"]', self.post_code, exception_message='Postcode textbox on page 2')
@@ -73,6 +74,7 @@ class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFi
         sleep(20)
 
     def fill_page4(self):
+
         self.test_quote_page(self.trade)
         self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 4')
 
@@ -84,42 +86,24 @@ class CafeAvivaCustomerFrontendFormFill(BusinessType, FormFillOperations, CafeFi
         self.click_element('//button[contains(text(),"Continue")]', exception_message='Continue button on page 5')
 
 
-    def test(self):
-        print(color('Starting Cafe Test', text_color='green'))
+    def test_pages(self):
+        start_times = []
+        end_times = []
+        methods = (self.fill_page1, self.fill_page2, self.fill_page3, self.fill_page4, self.fill_page5)
+
+        print(color('Starting Cafe Test', text_color='green', is_bold=True))
         self.setup()
         sleep(0.2)
 
-        start1 = time()
-        self.fill_page1()
-        print(color('Page 1 successful', text_color='dark green'))
-        end1 = time()
-        sleep(0.3)
-
-        start2 = time()
-        self.fill_page2()
-        print(color('Page 2 successful', text_color='dark green'))
-        end2 = time()
-        sleep(0.3)
-
-        start3 = time()
-        self.fill_page3()
-        print(color('Page 3 successful', text_color='dark green'))
-        end3 = time()
-        sleep(0.3)
-
-        start4 = time()
-        self.fill_page4()
-        print(color('Page 4 successful', text_color='dark green'))
-        sleep(0.3)
-        end4 = time()
-
-        start5 = time()
-        self.fill_page5()
-        print(color('Page 5 successful', text_color='dark green'))
-        end5 = time()
+        for page_number in range(1, 5 + 1):
+            start_times.append(time())
+            methods[page_number - 1]()
+            print(color(f'Page {page_number} successful', text_color='dark green'))
+            end_times.append(time())
+            sleep(0.3)
         
+        time_taken = [start_times_i - end_times_i for start_times_i, end_times_i in zip(start_times, end_times)]
         self.driver.close()
-
-        return end1 - start1, end2 - start2, end3 - start3, end4 - start4, end5 - start5
+        return tuple(time_taken)
         
 form_filler = CafeAvivaCustomerFrontendFormFill()
